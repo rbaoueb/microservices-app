@@ -11,4 +11,4 @@ spring:
         git:
           uri: https://github.com/rbaoueb/config-repo
           clone-on-start: true
-          default-label: main # ou master selon votre branche
+          default-label: develop # ou master selon votre branche
