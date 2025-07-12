@@ -1,19 +1,30 @@
 package com.example.orderservice.controller;
 
-import com.example.orderservice.client.CustomerClient;
-import com.example.orderservice.model.Customer;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.orderservice.model.Order;
+import com.example.orderservice.repository.OrderRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
-    @Autowired private CustomerClient customerClient;
 
-    @GetMapping("/customers")
-    public List<Customer> getCustomersFromCustomerService() {
-        return customerClient.getCustomers();
+    private final OrderRepository orderRepository;
+
+    public OrderController(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
+    @GetMapping
+    public List<Order> all() {
+        return orderRepository.findAll();
+    }
+
+    @PostMapping
+    public Order create(@RequestBody Order order) {
+        order.setOrderDate(LocalDateTime.now());
+        return orderRepository.save(order);
     }
 }
