@@ -1,0 +1,43 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Build output directories
+/out/
+/build/
+
+# Java class files
+*.class
+
+# Maven
+target/
+
+# Gradle
+.gradle/
+build/
+
+# Node.js (if applicable)
+node_modules/
+
+# Python (if applicable)
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Misc
+*.swp
+*.bak
+*.tmp

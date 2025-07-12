@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  config-server:
+    build: ./config-server
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./config-repo:/config-repo
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+  customer-db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: customerdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+
+  order-db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: orderdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5434:5432"
+
+  consul:
+    image: consul:1.15
+    ports:
+      - "8500:8500"
+
+  customer-service:
+    build: ./customer-service
+    depends_on:
+      - customer-db
+      - config-server
+      - consul
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    ports:
+      - "8081:8081"
+
+  order-service:
+    build: ./order-service
+    depends_on:
+      - order-db
+      - config-server
+      - consul
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    ports:
+      - "8082:8082"
