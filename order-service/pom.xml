@@ -45,6 +45,14 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+        </dependency>
     </dependencies>
 <build>
     <plugins>
@@ -58,6 +66,9 @@
                     </goals>
                 </execution>
             </executions>
+        </plugin>
+        <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
         </plugin>
     </plugins>
 </build>

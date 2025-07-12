@@ -1,8 +1,9 @@
 package com.example.orderservice.model;
 
+import lombok.Data;
+
+@Data
 public class Customer {
     private Long id;
     private String name;
-
-    // Getters and Setters
 }
