@@ -16,10 +16,11 @@ public class Adresse {
 
     private String rue;
     private String ville;
+
+    @Column(name = "code_postal")
     private String codePostal;
-    private String pays;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 }
