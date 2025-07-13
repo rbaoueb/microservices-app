@@ -29,7 +29,9 @@ public class OrderService {
     @Transactional
     public OrderDTO getOrderById(Long id) {
         var order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order not found with id " + id));
+        log.error("going to get customer id "+order.getCustomer().getId());
         var customer = customerClient.getCustomerById(order.getCustomer().getId());
+        log.error("got customer "+customer);
         var totalPrice = order.getItems().stream().map(OrderItem::getProduct).mapToDouble(Product::getPrice).sum();
         return orderMapper.orderToDto(order, customer, totalPrice);
     }
