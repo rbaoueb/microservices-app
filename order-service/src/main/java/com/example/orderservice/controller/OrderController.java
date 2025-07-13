@@ -1,30 +1,28 @@
 package com.example.orderservice.controller;
 
-import com.example.orderservice.model.Order;
-import com.example.orderservice.repository.OrderRepository;
+import com.example.orderservice.dto.OrderDTO;
+import com.example.orderservice.service.OrderService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
 
-    private final OrderRepository orderRepository;
+    private final OrderService orderService;
 
-    public OrderController(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
-    @GetMapping
-    public List<Order> all() {
-        return orderRepository.findAll();
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderDTO> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(orderService.getOrderById(id));
     }
 
     @PostMapping
-    public Order create(@RequestBody Order order) {
-        order.setOrderDate(LocalDateTime.now());
-        return orderRepository.save(order);
+    public ResponseEntity<OrderDTO> create(@RequestBody OrderDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(dto));
     }
 }

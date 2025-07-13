@@ -1,6 +1,8 @@
-INSERT INTO customer (id, name, email) VALUES
-(1, 'Alice Dupont', 'alice@example.com'),
-(2, 'Bob Martin', 'bob@example.com') ON CONFLICT DO NOTHING;
+INSERT INTO customer (first_name, last_name, email) VALUES
+    ('Alice', 'Martin', 'alice.martin@example.com'),
+    ('Bob', 'Dupont', 'bob.dupont@example.com'),
+    ('Chloe', 'Durand', 'chloe.durand@example.com')
+ON CONFLICT DO NOTHING;
 
 INSERT INTO product (id, name, price) VALUES
 (1, 'Laptop', 1200.00),
