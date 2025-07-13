@@ -2,6 +2,7 @@ package com.example.orderservice.service;
 
 import com.example.orderservice.dto.OrderDTO;
 import com.example.orderservice.exception.ResourceNotFoundException;
+import com.example.orderservice.feign.CustomerClient;
 import com.example.orderservice.mapper.OrderMapper;
 import com.example.orderservice.model.Order;
 import com.example.orderservice.model.OrderItem;
@@ -17,23 +18,27 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
+    private final CustomerClient customerClient;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, CustomerClient customerClient) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
+        this.customerClient = customerClient;
     }
 
     @Transactional
     public OrderDTO getOrderById(Long id) {
         var order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order not found with id " + id));
+        var customer = customerClient.getCustomerById(order.getCustomer().getId());
         var totalPrice = order.getItems().stream().map(OrderItem::getProduct).mapToDouble(Product::getPrice).sum();
-        return orderMapper.orderToDto(order,totalPrice);
+        return orderMapper.orderToDto(order, customer, totalPrice);
     }
 
     public OrderDTO createOrder(OrderDTO dto) {
         Order order = orderMapper.orderToEntity(dto);
+        var customer = customerClient.getCustomerById(order.getCustomer().getId());
         Order saved = orderRepository.save(order);
-        var totalPrice = order.getItems().stream().mapToDouble(OrderItem::getQuantity).sum();
-        return orderMapper.orderToDto(saved, totalPrice);
+        var totalPrice = order.getItems().stream().map(OrderItem::getProduct).mapToDouble(Product::getPrice).sum();
+        return orderMapper.orderToDto(saved, customer, totalPrice);
     }
 }

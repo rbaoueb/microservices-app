@@ -25,9 +25,9 @@ public abstract class OrderMapper {
 
     @Mapping(source = "order.id", target = "id")
     @Mapping(source = "order.date", target = "date")
-    @Mapping(source = "order.customer", target = "customer")
+    @Mapping(source = "customer", target = "customer")
     @Mapping(source = "totalPrice", target = "totalPrice")
-    public abstract OrderDTO orderToDto(Order order, Double totalPrice);
+    public abstract OrderDTO orderToDto(Order order, CustomerDTO customer, Double totalPrice);
 
     @Mapping(source = "item.product.name", target = "product")
     @Mapping(source = "item.product.price", target = "price")
