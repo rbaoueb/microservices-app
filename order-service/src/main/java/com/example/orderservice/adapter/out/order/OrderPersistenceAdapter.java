@@ -1,6 +1,7 @@
 package com.example.orderservice.adapter.out.order;
 
 import com.example.orderservice.dto.OrderDTO;
+import com.example.orderservice.exception.ResourceNotFoundException;
 import com.example.orderservice.feign.CustomerClient;
 import com.example.orderservice.mapper.OrderMapper;
 import com.example.orderservice.model.Order;
@@ -30,6 +31,9 @@ public class OrderPersistenceAdapter implements OrderOutPort {
 
     @Override
     public OrderDTO fetchById(Long id) {
-        return null;
+        var order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order not found with id " + id));
+        var customer = customerClient.getCustomerById(order.getCustomer().getId());
+        var totalPrice = order.getItems().stream().map(OrderItem::getProduct).mapToDouble(Product::getPrice).sum();
+        return orderMapper.orderToDto(order, customer, totalPrice);
     }
 }

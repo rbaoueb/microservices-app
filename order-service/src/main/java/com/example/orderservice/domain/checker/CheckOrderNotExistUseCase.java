@@ -1,7 +1,9 @@
 package com.example.orderservice.domain.checker;
 
-@FunctionalInterface
-public interface CheckOrderNotExistUseCase {
+import com.example.orderservice.port.out.OrderOutPort;
 
-    void check(Long id);
+@FunctionalInterface
+public interface CheckOrderNotExistUseCase<T> {
+
+    void check(OrderOutPort orderOutPort, T id);
 }

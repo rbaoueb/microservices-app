@@ -14,12 +14,16 @@ public class CreateOrderUseCase implements CreateOrderPort {
 
     private final OrderOutPort orderOutPort;
 
+    private CheckOrderNotExistUseCase<Long> checker = (orderPort,orderId) -> {
+        OrderDTO existingOrder = orderPort.fetchById(orderId);
+        if(existingOrder != null) {
+            throw new ResourceAlreadyExistsException(String.format("order with id %s already exists !", orderId));
+        }
+    };
+
     @Override
     public OrderDTO execute(OrderDTO order) {
-        OrderDTO existingOrder = orderOutPort.fetchById(order.getId());
-        if(existingOrder != null) {
-            throw new ResourceAlreadyExistsException(String.format("order with id %s already exists !", order.getId()));
-        }
+        checker.check(orderOutPort, order.getId());
         return orderOutPort.create(order);
     }
 }
