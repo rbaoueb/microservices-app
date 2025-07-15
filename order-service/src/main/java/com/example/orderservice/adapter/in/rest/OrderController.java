@@ -1,20 +1,20 @@
-package com.example.orderservice.controller;
+package com.example.orderservice.adapter.in.rest;
 
 import com.example.orderservice.dto.OrderDTO;
+import com.example.orderservice.port.in.CreateOrderPort;
 import com.example.orderservice.service.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/orders")
+@RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
-
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
+    private final CreateOrderPort createOrderPort;
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderDTO> getById(@PathVariable Long id) {
@@ -23,6 +23,6 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderDTO> create(@RequestBody OrderDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(createOrderPort.execute(dto));
     }
 }
