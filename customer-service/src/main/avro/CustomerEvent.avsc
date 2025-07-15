@@ -1,0 +1,11 @@
+{
+  "namespace": "com.example.avro",
+  "type": "record",
+  "name": "CustomerEvent",
+  "fields": [
+    { "name": "firstName", "type": "string" },
+    { "name": "lastName", "type": "string" },
+    { "name": "email", "type": "string" },
+    { "name": "eventType", "type": "string" }
+  ]
+}

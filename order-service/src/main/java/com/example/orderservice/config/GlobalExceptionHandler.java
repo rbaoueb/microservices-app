@@ -1,4 +1,4 @@
-package com.example.orderservice;
+package com.example.orderservice.config;
 
 import com.example.orderservice.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
