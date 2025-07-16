@@ -1,0 +1,16 @@
+services:
+
+  connect:
+    image: debezium/connect:2.6
+    environment:
+      BOOTSTRAP_SERVERS: kafka:9092
+      GROUP_ID: connect-cluster
+      CONFIG_STORAGE_TOPIC: connect-configs
+      OFFSET_STORAGE_TOPIC: connect-offsets
+      STATUS_STORAGE_TOPIC: connect-status
+    ports:
+      - 8083:8083
+    networks:
+      - spring-net
+networks:
+  spring-net:

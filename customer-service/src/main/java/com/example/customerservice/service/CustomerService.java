@@ -30,13 +30,13 @@ public class CustomerService {
     public CustomerDTO createCustomer(CustomerDTO dto) {
         Customer customer = customerMapper.toEntity(dto);
         Customer saved = customerRepository.save(customer);
-        CustomerEvent event = CustomerEvent.newBuilder()
-                .setFirstName(saved.getFirstName())
-                .setLastName(saved.getLastName())
-                .setEmail(saved.getEmail())
-                .setEventType("CREATED")
-                .build();
-        eventProducer.sendCustomerEvent(event, saved.getId());
+//        CustomerEvent event = CustomerEvent.newBuilder()
+//                .setFirstName(saved.getFirstName())
+//                .setLastName(saved.getLastName())
+//                .setEmail(saved.getEmail())
+//                .setEventType("CREATED")
+//                .build();
+//        eventProducer.sendCustomerEvent(event, saved.getId());
         return customerMapper.toDTO(saved);
     }
 

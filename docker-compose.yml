@@ -7,7 +7,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
     ports:
-      - "8083:8083"
+      - "8383:8383"
     networks:
       - spring-net
 
