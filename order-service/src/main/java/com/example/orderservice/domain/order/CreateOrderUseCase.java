@@ -24,6 +24,7 @@ public class CreateOrderUseCase implements CreateOrderPort {
     @Override
     public OrderDTO execute(OrderDTO order) {
         checker.check(orderOutPort, order.getId());
+
         return orderOutPort.create(order);
     }
 }

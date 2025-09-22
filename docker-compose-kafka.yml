@@ -8,7 +8,8 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2181:2181"
-
+    networks:
+      - spring-net
   kafka:
     image: confluentinc/cp-kafka:7.5.0
     container_name: kafka
@@ -30,28 +31,49 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
 
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-
+    networks:
+      - spring-net
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.5.0
     container_name: schema-registry
     depends_on:
       - kafka
+    hostname: schema-registry
     ports:
       - "8090:8090"
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:9092
-
-  kafka-ui:
-    image: provectuslabs/kafka-ui:latest
-    container_name: kafka-ui
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8090
+    networks:
+      - spring-net
+#  kafka-ui:
+#    image: provectuslabs/kafka-ui:latest
+#    container_name: kafka-ui
+#    depends_on:
+#      - kafka
+#      - schema-registry
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      KAFKA_CLUSTERS_0_NAME: local
+#      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+#      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8090
+  akhq:
+    image: tchiotludo/akhq:latest
+    container_name: akhq
     depends_on:
       - kafka
       - schema-registry
     ports:
       - "8080:8080"
+    volumes:
+      - ./akhq.yml:/app/application.yml
     environment:
-      KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
-      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8090
+      # optionnel : par exemple pour JVM options
+      JAVA_OPTS: "-Duser.timezone=Europe/Paris"
+    networks:
+      - spring-net
+networks:
+  spring-net:

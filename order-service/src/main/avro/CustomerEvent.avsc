@@ -3,7 +3,7 @@
   "type": "record",
   "name": "CustomerEvent",
   "fields": [
-    { "name": "firstName", "type": "string" },
+    { "name": "firstName", "type": ["string","null"] },
     { "name": "lastName", "type": "string" },
     { "name": "email", "type": "string" },
     { "name": "eventType", "type": "string" }
