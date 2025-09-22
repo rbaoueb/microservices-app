@@ -11,4 +11,4 @@ spring:
         git:
           uri: https://github.com/rbaoueb/config-repo
           clone-on-start: true
-          default-label: develop # ou master selon votre branche
+          default-label: atelier-j3 # ou master selon votre branche

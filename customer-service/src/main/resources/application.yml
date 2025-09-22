@@ -3,3 +3,6 @@ spring:
     name: customer-service
   config:
     import: optional:configserver:http://config-server:8888
+  cloud:
+    config:
+      label: atelier-j3
