@@ -1,6 +1,6 @@
-package com.example.customerservice;
+package com.example.customerservice.infrastructure.rest;
 
-import com.example.customerservice.exception.ResourceNotFoundException;
+import com.example.customerservice.application.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

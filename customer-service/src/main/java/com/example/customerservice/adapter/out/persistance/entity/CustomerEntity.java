@@ -1,14 +1,19 @@
-package com.example.customerservice.entity;
+package com.example.customerservice.adapter.out.persistance.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
-public class Customer {
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "customer")
+public class CustomerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,5 +27,5 @@ public class Customer {
     @Column(unique = true)
     private String email;
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Adresse> adresses = new ArrayList<>();
+    private List<AdresseEntity> adresses = new ArrayList<>();
 }
