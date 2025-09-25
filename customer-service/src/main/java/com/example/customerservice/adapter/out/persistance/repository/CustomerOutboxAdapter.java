@@ -3,10 +3,12 @@ package com.example.customerservice.adapter.out.persistance.repository;
 import com.example.customerservice.adapter.out.persistance.entity.CustomerOutboxEntity;
 import com.example.customerservice.application.port.out.CustomerOutboxOut;
 import com.example.customerservice.domain.model.Customer;
+import com.example.customerservice.infrastructure.util.SerializationUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @Component
@@ -23,10 +25,15 @@ public class CustomerOutboxAdapter implements CustomerOutboxOut {
             entity.setId(UUID.randomUUID());
             entity.setAggregateId(customer.getId());
             entity.setType("CustomerCreated");
-            entity.setPayload(objectMapper.writeValueAsBytes(customer));
+            entity.setPayload(SerializationUtils.toBytes(customer));
             repository.save(entity);
         } catch (Exception e) {
             throw new RuntimeException("Failed to save outbox event", e);
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        Customer customer = new Customer(1L,"Ridha","BAOUEB","");
+        System.err.println(SerializationUtils.toBytes(customer));
     }
 }

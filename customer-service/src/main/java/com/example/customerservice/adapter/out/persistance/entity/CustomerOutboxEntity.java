@@ -24,7 +24,7 @@ public class CustomerOutboxEntity {
     private String type;
 
     @Lob
-    @Column(name = "payload")
+    @Column(columnDefinition = "BYTEA")
     private byte[] payload;
 
     @Column(name = "sent")

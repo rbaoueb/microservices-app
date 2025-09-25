@@ -3,6 +3,7 @@ package com.example.customerservice.adapter.out.scheduler;
 import com.example.customerservice.adapter.out.persistance.repository.CustomerOutboxRepository;
 import com.example.customerservice.application.port.out.CustomerEventPublisherOut;
 import com.example.customerservice.domain.model.Customer;
+import com.example.customerservice.infrastructure.util.SerializationUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +26,13 @@ public class OutboxPublisher {
         var events = customerOutboxRepository.findBySentFalse();
         for (var event : events) {
             try {
-                log.info("Publishing event " + event.getId());
-                customerEventPublisherOut.publishCustomerCreated(objectMapper.convertValue(event.getPayload(), Customer.class));
+                var customer = SerializationUtils.fromBytes(event.getPayload(), Customer.class);
+                log.info("Publishing event " + customer);
+                customerEventPublisherOut.publishCustomerCreated(customer);
                 event.setSent(true);
                 customerOutboxRepository.save(event);
             } catch (Exception e) {
-                log.warn("Kafka publish failed for event " + event.getId());
+                log.warn("Kafka publish failed for event " + event.getId(),e);
                 // retry next scheduled run
             }
         }

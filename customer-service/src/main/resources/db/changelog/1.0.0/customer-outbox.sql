@@ -2,7 +2,7 @@ CREATE TABLE customer_outbox (
                                  id UUID PRIMARY KEY,
                                  aggregate_id BIGINT NOT NULL,
                                  type VARCHAR(255) NOT NULL,
-                                 payload TEXT NOT NULL,
+                                 payload BYTEA NOT NULL,
                                  sent BOOLEAN DEFAULT FALSE,
                                  created_at TIMESTAMP DEFAULT NOW()
 );
