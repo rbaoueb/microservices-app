@@ -1,9 +1,13 @@
 package com.example.customerservice.adapter.out.persistance.entity;
 
+import com.example.customerservice.domain.model.Customer;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
@@ -23,9 +27,9 @@ public class CustomerOutboxEntity {
     @Column(name = "type")
     private String type;
 
-    @Lob
-    @Column(columnDefinition = "BYTEA")
-    private byte[] payload;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb", name = "payload")
+    private Customer customer;
 
     @Column(name = "sent")
     private boolean sent = false;

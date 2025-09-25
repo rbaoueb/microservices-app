@@ -25,7 +25,7 @@ public class CustomerOutboxAdapter implements CustomerOutboxOut {
             entity.setId(UUID.randomUUID());
             entity.setAggregateId(customer.getId());
             entity.setType("CustomerCreated");
-            entity.setPayload(SerializationUtils.toBytes(customer));
+            entity.setCustomer(customer);
             repository.save(entity);
         } catch (Exception e) {
             throw new RuntimeException("Failed to save outbox event", e);

@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  drools-workbench:
+    image: jboss/business-central-workbench-showcase:latest
+    container_name: drools-workbench
+    ports:
+      - "3366:8080"
+    environment:
+      KIE_ADMIN_USER: admin
+      KIE_ADMIN_PWD: admin
+    networks:
+      - spring-net
+
+  kie-server:
+    image: jboss/kie-server-showcase:latest
+    container_name: kie-server
+    ports:
+      - "3367:8080"
+    environment:
+      KIE_SERVER_USER: kieuser
+      KIE_SERVER_PWD: kiepassword
+      KIE_SERVER_CONTROLLER: http://drools-workbench:8080/kie-wb/rest/controller
+      KIE_SERVER_MODE: managed
+    depends_on:
+      - drools-workbench
+    networks:
+      - spring-net
+
+networks:
+  spring-net:

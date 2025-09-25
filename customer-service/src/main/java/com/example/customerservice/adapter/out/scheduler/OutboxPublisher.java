@@ -26,9 +26,8 @@ public class OutboxPublisher {
         var events = customerOutboxRepository.findBySentFalse();
         for (var event : events) {
             try {
-                var customer = SerializationUtils.fromBytes(event.getPayload(), Customer.class);
-                log.info("Publishing event " + customer);
-                customerEventPublisherOut.publishCustomerCreated(customer);
+                log.info("Publishing event " + event.getCustomer());
+                customerEventPublisherOut.publishCustomerCreated(event.getCustomer());
                 event.setSent(true);
                 customerOutboxRepository.save(event);
             } catch (Exception e) {
