@@ -67,12 +67,12 @@ public class CustomerController {
         return ResponseEntity.created(location).body(created);
     }
 
-    @PatchMapping(path = {"/id"}, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Customer> updateEmailCustomer(@PathVariable Long id, @RequestParam String email) {
+    @PatchMapping(path = {"/{id}"}, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Customer> updateEmailCustomer(@PathVariable Long id, @RequestBody UpdateEmailCustomerRequest email) {
         log.debug("Request received: update email customer");
 
         Customer updated = retryableTransactionalUpdateEmailCustomerService
-                .updateEmailCustomer(id, email);
+                .updateEmailCustomer(id, email.email());
         return ResponseEntity.ok(updated);
 
     }

@@ -31,6 +31,7 @@ public class GlobalExceptionHandler {
     // Gestion des autres exceptions génériques
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex, WebRequest request) {
+        log.error("Error while creating customer: {}", ex.getMessage());
         ErrorResponse error = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Une erreur interne est survenue");
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);

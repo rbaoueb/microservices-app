@@ -16,11 +16,11 @@ public class RetryableTransactionalUpdateEmailCustomerService {
 
     private final TransactionalUpdateEmailCustomerService transactionalUpdateEmailCustomerService;
 
-    @Retryable(
-            retryFor = { DataAccessException.class },
-            maxAttempts = 5,
-            backoff = @Backoff(delay = 2000, multiplier = 2)
-    )
+//    @Retryable(
+//            retryFor = { DataAccessException.class },
+//            maxAttempts = 5,
+//            backoff = @Backoff(delay = 2000, multiplier = 2)
+//    )
     public Customer updateEmailCustomer(Long id, String email) {
         return transactionalUpdateEmailCustomerService.updateEmailCustomer(id, email);
     }
