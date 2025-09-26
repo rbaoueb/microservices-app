@@ -16,18 +16,18 @@ public class RetryableTransactionalCreateCustomerService {
 
     private final TransactionalCreateCustomerService transactionalService;
 
-    @Retryable(
-            retryFor = { DataAccessException.class },
-            maxAttempts = 5,
-            backoff = @Backoff(delay = 2000, multiplier = 2)
-    )
+//    @Retryable(
+//            retryFor = { DataAccessException.class },
+//            maxAttempts = 5,
+//            backoff = @Backoff(delay = 2000, multiplier = 2)
+//    )
     public Customer create(Customer customer) {
         return transactionalService.create(customer);
     }
 
-    @Recover
-    public void recover(DataAccessException e, Customer customer) {
-        // optionnel : alerter, journaliser ou déplacer la requête dans une file d'attente
-        log.error("Echec définitif pour Customer: {}", customer.getEmail());
-    }
+//    @Recover
+//    public void recover(DataAccessException e, Customer customer) {
+//        // optionnel : alerter, journaliser ou déplacer la requête dans une file d'attente
+//        log.error("Echec définitif pour Customer: {}", customer.getEmail());
+//    }
 }
