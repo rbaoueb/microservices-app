@@ -27,7 +27,12 @@ public class OutboxPublisher {
         for (var event : events) {
             try {
                 log.info("Publishing event " + event.getCustomer());
-                customerEventPublisherOut.publishCustomerCreated(event.getCustomer());
+
+                if(event.getType().equalsIgnoreCase("CustomerUpdated")){
+                    customerEventPublisherOut.publishCustomerUpdated(event.getCustomer());
+                }else {
+                    customerEventPublisherOut.publishCustomerCreated(event.getCustomer());
+                }
                 event.setSent(true);
                 customerOutboxRepository.save(event);
             } catch (Exception e) {

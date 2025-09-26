@@ -4,4 +4,5 @@ import com.example.customerservice.domain.model.Customer;
 
 public interface CustomerOutboxOut {
     void saveCustomerCreatedEvent(Customer customer);
+    void saveCustomerUpdatedEvent(Customer customer);
 }

@@ -27,4 +27,11 @@ public class CustomerRepositoryAdapter implements CustomerRepositoryOut {
     public Optional<Customer> findById(Long id) {
         return customerRepository.findById(id).map(mapper::toDomain);
     }
+
+    @Override
+    public Optional<Customer> findByEmail(String email) {
+        return customerRepository.findByEmail(email).map(mapper::toDomain);
+    }
+
+
 }

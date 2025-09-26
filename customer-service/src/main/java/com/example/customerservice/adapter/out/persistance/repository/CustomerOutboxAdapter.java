@@ -31,4 +31,20 @@ public class CustomerOutboxAdapter implements CustomerOutboxOut {
             throw new RuntimeException("Failed to save outbox event", e);
         }
     }
+
+    @Override
+    public void saveCustomerUpdatedEvent(Customer customer) {
+        try {
+            CustomerOutboxEntity entity = new CustomerOutboxEntity();
+            entity.setId(UUID.randomUUID());
+            entity.setAggregateId(customer.getId());
+            entity.setType("CustomerUpdated");
+            entity.setCustomer(customer);
+            repository.save(entity);
+        }catch (Exception e) {
+            throw new RuntimeException("Failed to save outbox event", e);
+        }
+    }
+
+
 }

@@ -3,6 +3,7 @@ package com.example.customerservice.adapter.in.rest;
 import com.example.customerservice.adapter.in.mapper.CustomerRestMapper;
 import com.example.customerservice.adapter.in.rest.dto.CreateCustomerRequest;
 import com.example.customerservice.adapter.in.transaction.RetryableTransactionalCreateCustomerService;
+import com.example.customerservice.adapter.in.transaction.RetryableTransactionalUpdateCustomerService;
 import com.example.customerservice.application.port.in.CreateCustomerIn;
 import com.example.customerservice.domain.usecase.CreateCustomerUseCase;
 import com.example.customerservice.domain.model.Customer;
@@ -24,6 +25,7 @@ public class CustomerController {
 
 //    private final CreateCustomerIn createCustomerUseCase;
     private final RetryableTransactionalCreateCustomerService retryableCreateCustomerService;
+    private final RetryableTransactionalUpdateCustomerService retryableUpdateCustomerService;
     private final CustomerRestMapper mapper;
 
 //    @GetMapping
@@ -56,6 +58,22 @@ public class CustomerController {
         log.debug("Request received: create customer");
         Customer customerDomain = mapper.toDomain(request);
         Customer created = retryableCreateCustomerService.create(customerDomain);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(created);
+    }
+
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Customer> updateCustomerRetryable(
+            @PathVariable("id") Long id,
+            @RequestBody CreateCustomerRequest request) {
+        log.debug("Request received: update customer");
+        Customer customerDomain = mapper.toDomain(request);
+        Customer created = retryableUpdateCustomerService.update(id,customerDomain);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
