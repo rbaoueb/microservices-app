@@ -32,14 +32,7 @@ public class CustomerRepositoryAdapter implements CustomerRepositoryOut {
 
     @Override
     public Boolean existingCustomerWithEmail(String email) {
-        List<CustomerEntity> customerList = customerRepository.findAll();
-        if (!customerList.isEmpty()){
-            for (CustomerEntity customerEntity : customerList) {
-                if (customerEntity.getEmail().equals(email)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        CustomerEntity customer = customerRepository.findByEmail(email);
+        return customer != null && customer.getEmail().equals(email);
     }
 }

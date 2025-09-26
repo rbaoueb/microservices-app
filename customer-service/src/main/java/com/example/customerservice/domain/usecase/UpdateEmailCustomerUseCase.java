@@ -15,7 +15,7 @@ import java.util.Optional;
 public record UpdateEmailCustomerUseCase(CustomerRepositoryOut customerRepositoryOut,
                                          CustomerEventPublisherOut customerEventPublisherOut) implements UpdateEmailCustomerIn {
     @Override
-    public Customer execute(UpdateEmailCustomerRequest updateEmailCustomerRequest) {
+    public Customer execute(UpdateEmailCustomerRequest updateEmailCustomerRequest) throws CustomerAlreadyExistException{
         Boolean existingWithEmail = customerRepositoryOut.existingCustomerWithEmail(updateEmailCustomerRequest.email());
         if (existingWithEmail) {
             throw new CustomerAlreadyExistException("Email " + updateEmailCustomerRequest.email() + " is already in use by another customer");

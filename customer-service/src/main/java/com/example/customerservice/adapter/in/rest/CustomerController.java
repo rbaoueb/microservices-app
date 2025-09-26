@@ -73,11 +73,6 @@ public class CustomerController {
 
         Customer updated = retryableTransactionalUpdateEmailCustomerService
                 .updateEmailCustomer(updateEmailCustomerRequest);
-//        URI location = ServletUriComponentsBuilder
-//                .fromCurrentRequest()
-//                .path("/{id}")
-//                .buildAndExpand(updated.getId())
-//                .toUri();
         return ResponseEntity.ok(updated);
 
     }
