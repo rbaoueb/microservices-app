@@ -9,6 +9,7 @@ import com.example.customerservice.domain.model.Customer;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -71,6 +72,7 @@ public class CustomerController {
                                                  @PathVariable Long id) {
         log.debug("Request received: Start of modification of customer email");
         retryableTransactionInfoCustomerService.updateEmailInfo(id, request);
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body("Done");
     }
 }
