@@ -66,8 +66,8 @@ public class CustomerController {
         return ResponseEntity.created(location).body(created);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE
-            , path="/{id}/changeEmail")
+    @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE
+            , path="/{id}")
     public ResponseEntity<?> updateEmailCustomer(@RequestBody @Valid EmailModificationRequest request,
                                                  @PathVariable Long id) {
         log.debug("Request received: Start of modification of customer email");

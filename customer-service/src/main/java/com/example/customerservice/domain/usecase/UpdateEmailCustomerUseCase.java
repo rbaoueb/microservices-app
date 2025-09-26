@@ -18,17 +18,12 @@ public record UpdateEmailCustomerUseCase(
     @Override
     public Customer execute(Long customerId, EmailModificationRequest request) {
         var dbCustomer = customerRepositoryOut.findById(customerId);
-        if (dbCustomer.isPresent() ) {
-            // Update the Email
-            var dbCustomerDomain = dbCustomer.get();
-            dbCustomerDomain.setEmail(request.newEmail());
-            var customerUpdated = customerRepositoryOut.save(dbCustomerDomain);
-
-            // Push the event into Kafka topic
-            customerOutboxOut.saveCustomerCreatedEvent(dbCustomerDomain);
-
-            return customerUpdated;
-        }
-        else throw new ResourceNotFoundException("Customer doesn't exist. ");
+        var customer = dbCustomer.orElseThrow(() -> new ResourceNotFoundException("CUSTOMER%s"));
+        // Update the Email
+        customer.setEmail(request.newEmail());
+        var customerUpdated = customerRepositoryOut.save(customer);
+        // Push the event into Kafka topic
+        customerOutboxOut.saveCustomerCreatedEvent(customer);
+        return customerUpdated;
     }
 }
