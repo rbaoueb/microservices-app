@@ -16,6 +16,7 @@ public class GlobalExceptionHandler {
     // Gestion d’une exception personnalisée
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex, WebRequest request) {
+        log.error("Error while creating customer: {}", ex.getMessage());
         ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
@@ -31,6 +32,7 @@ public class GlobalExceptionHandler {
     // Gestion des autres exceptions génériques
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex, WebRequest request) {
+        log.error("Error while creating customer: {}", ex.getMessage());
         ErrorResponse error = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Une erreur interne est survenue");
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
