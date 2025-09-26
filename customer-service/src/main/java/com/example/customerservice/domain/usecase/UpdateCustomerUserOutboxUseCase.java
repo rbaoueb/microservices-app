@@ -24,7 +24,7 @@ public record UpdateCustomerUserOutboxUseCase(CustomerRepositoryOut customerRepo
         Customer customerFound = setNewValueForUpdate(customer, customerFoundOptional.get());
 
         var updatedCustomer = customerRepositoryOut.save(customerFound);
-        customerOutboxOut.saveCustomerUpdatedEvent(updatedCustomer);
+        customerOutboxOut.execute(updatedCustomer, "CustomerUpdated");
         return updatedCustomer;
     }
 

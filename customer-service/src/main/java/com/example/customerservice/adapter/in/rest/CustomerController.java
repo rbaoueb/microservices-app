@@ -4,8 +4,6 @@ import com.example.customerservice.adapter.in.mapper.CustomerRestMapper;
 import com.example.customerservice.adapter.in.rest.dto.CreateCustomerRequest;
 import com.example.customerservice.adapter.in.transaction.RetryableTransactionalCreateCustomerService;
 import com.example.customerservice.adapter.in.transaction.RetryableTransactionalUpdateCustomerService;
-import com.example.customerservice.application.port.in.CreateCustomerIn;
-import com.example.customerservice.domain.usecase.CreateCustomerUseCase;
 import com.example.customerservice.domain.model.Customer;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -67,7 +65,7 @@ public class CustomerController {
     }
 
 
-    @PutMapping("/update/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Customer> updateCustomerRetryable(
             @PathVariable("id") Long id,
             @RequestBody CreateCustomerRequest request) {

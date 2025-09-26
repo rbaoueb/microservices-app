@@ -2,7 +2,9 @@ package com.example.customerservice.application.port.out;
 
 import com.example.customerservice.domain.model.Customer;
 
+@FunctionalInterface
 public interface CustomerOutboxOut {
-    void saveCustomerCreatedEvent(Customer customer);
-    void saveCustomerUpdatedEvent(Customer customer);
+
+    void execute(Customer customer, String eventType);
+
 }

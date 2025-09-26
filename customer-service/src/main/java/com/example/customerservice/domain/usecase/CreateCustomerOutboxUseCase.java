@@ -17,7 +17,7 @@ public record CreateCustomerOutboxUseCase(CustomerRepositoryOut customerReposito
             throw new CustomerAlreadyExistException("Customer already exists");
         });
         var createdCustomer = customerRepositoryOut.save(customer);//ok
-        customerOutboxOut.saveCustomerCreatedEvent(createdCustomer);//ko
+        customerOutboxOut.execute(createdCustomer,"CustomerCreated");//ko
         return createdCustomer;
     }
 }

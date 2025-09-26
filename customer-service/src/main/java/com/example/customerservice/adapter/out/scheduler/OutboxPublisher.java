@@ -1,5 +1,6 @@
 package com.example.customerservice.adapter.out.scheduler;
 
+import com.example.avro.CustomerEvent;
 import com.example.customerservice.adapter.out.persistance.repository.CustomerOutboxRepository;
 import com.example.customerservice.application.port.out.CustomerEventPublisherOut;
 import com.example.customerservice.domain.model.Customer;
@@ -8,6 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +20,17 @@ import org.springframework.stereotype.Component;
 public class OutboxPublisher {
 
     private final CustomerOutboxRepository customerOutboxRepository;
-    private final CustomerEventPublisherOut customerEventPublisherOut;
-    private final ObjectMapper objectMapper;
+    private final KafkaTemplate<String, CustomerEvent> kafkaTemplate;
+
+    @Value("${app.kafka.customer.topic}")
+    private String topic;
+
+    private final CustomerEventPublisherOut customerEventPublisherOut = (customer, eventType) -> CustomerEvent.newBuilder()
+            .setFirstName(customer.getFirstName())
+            .setLastName(customer.getLastName())
+            .setEmail(customer.getEmail())
+            .setEventType(eventType)
+            .build();
 
     @Scheduled(fixedDelay = 5000)
     @Transactional
@@ -27,12 +39,8 @@ public class OutboxPublisher {
         for (var event : events) {
             try {
                 log.info("Publishing event " + event.getCustomer());
-
-                if(event.getType().equalsIgnoreCase("CustomerUpdated")){
-                    customerEventPublisherOut.publishCustomerUpdated(event.getCustomer());
-                }else {
-                    customerEventPublisherOut.publishCustomerCreated(event.getCustomer());
-                }
+                var customerEvent = customerEventPublisherOut.execute(event.getCustomer(),event.getType());
+                kafkaTemplate.send(topic, String.valueOf(event.getCustomer().getId()), customerEvent);
                 event.setSent(true);
                 customerOutboxRepository.save(event);
             } catch (Exception e) {
