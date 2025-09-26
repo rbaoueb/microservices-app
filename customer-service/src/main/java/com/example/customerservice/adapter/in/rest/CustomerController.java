@@ -2,9 +2,9 @@ package com.example.customerservice.adapter.in.rest;
 
 import com.example.customerservice.adapter.in.mapper.CustomerRestMapper;
 import com.example.customerservice.adapter.in.rest.dto.CreateCustomerRequest;
+import com.example.customerservice.adapter.in.rest.dto.EmailModificationRequest;
+import com.example.customerservice.adapter.in.transaction.RetryableTransactionInfoCustomerService;
 import com.example.customerservice.adapter.in.transaction.RetryableTransactionalCreateCustomerService;
-import com.example.customerservice.application.port.in.CreateCustomerIn;
-import com.example.customerservice.domain.usecase.CreateCustomerUseCase;
 import com.example.customerservice.domain.model.Customer;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +24,7 @@ public class CustomerController {
 
 //    private final CreateCustomerIn createCustomerUseCase;
     private final RetryableTransactionalCreateCustomerService retryableCreateCustomerService;
+    private final RetryableTransactionInfoCustomerService retryableTransactionInfoCustomerService;
     private final CustomerRestMapper mapper;
 
 //    @GetMapping
@@ -62,5 +63,14 @@ public class CustomerController {
                 .buildAndExpand(created.getId())
                 .toUri();
         return ResponseEntity.created(location).body(created);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE
+            , path="/{id}/changeEmail")
+    public ResponseEntity<?> updateEmailCustomer(@RequestBody @Valid EmailModificationRequest request,
+                                                 @PathVariable Long id) {
+        log.debug("Request received: Start of modification of customer email");
+        retryableTransactionInfoCustomerService.updateEmailInfo(id, request);
+        return ResponseEntity.accepted().build();
     }
 }
