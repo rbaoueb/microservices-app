@@ -1,31 +1,35 @@
-version: '3.8'
+version: '3.7'
 
 services:
-  drools-workbench:
-    image: jboss/business-central-workbench-showcase:latest
-    container_name: drools-workbench
+  business-central:
+    image: quay.io/kiegroup/business-central-workbench:7.73.0.Final
+    container_name: business-central
     ports:
       - "3366:8080"
-    environment:
-      KIE_ADMIN_USER: admin
-      KIE_ADMIN_PWD: admin
+    volumes:
+      - ./users.properties:/opt/jboss/wildfly/standalone/configuration/application-users.properties
+      - ./roles.properties:/opt/jboss/wildfly/standalone/configuration/application-roles.properties
     networks:
-      - spring-net
+      - drools-net
 
-  kie-server:
-    image: jboss/kie-server-showcase:latest
-    container_name: kie-server
+  kieserver:
+    image: quay.io/kiegroup/kie-server:7.73.0.Final
+    container_name: kieserver
     ports:
       - "3367:8080"
     environment:
-      KIE_SERVER_USER: kieuser
-      KIE_SERVER_PWD: kiepassword
-      KIE_SERVER_CONTROLLER: http://drools-workbench:8080/kie-wb/rest/controller
-      KIE_SERVER_MODE: managed
+      - KIE_SERVER_CONTROLLER=http://business-central:8080/business-central/rest/controller
+      - KIE_SERVER_CONTROLLER_USER=admin
+      - KIE_SERVER_CONTROLLER_PWD=admin123
+      - KIE_MAVEN_REPO=http://business-central:8080/business-central/maven2
+    volumes:
+      - ./users.properties:/opt/jboss/wildfly/standalone/configuration/application-users.properties
+      - ./roles.properties:/opt/jboss/wildfly/standalone/configuration/application-roles.properties
     depends_on:
-      - drools-workbench
+      - business-central
     networks:
-      - spring-net
+      - drools-net
 
 networks:
-  spring-net:
+  drools-net:
+    driver: bridge

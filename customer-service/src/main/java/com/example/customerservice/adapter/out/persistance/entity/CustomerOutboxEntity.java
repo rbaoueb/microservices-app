@@ -1,7 +1,6 @@
 package com.example.customerservice.adapter.out.persistance.entity;
 
 import com.example.customerservice.domain.model.Customer;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

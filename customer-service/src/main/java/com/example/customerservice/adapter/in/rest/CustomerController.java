@@ -3,6 +3,7 @@ package com.example.customerservice.adapter.in.rest;
 import com.example.customerservice.adapter.in.mapper.CustomerRestMapper;
 import com.example.customerservice.adapter.in.rest.dto.CreateCustomerRequest;
 import com.example.customerservice.adapter.in.transaction.RetryableTransactionalCreateCustomerService;
+import com.example.customerservice.application.port.in.CreateCustomerIn;
 import com.example.customerservice.domain.usecase.CreateCustomerUseCase;
 import com.example.customerservice.domain.model.Customer;
 import jakarta.validation.Valid;
@@ -21,7 +22,7 @@ import java.net.URI;
 @Slf4j
 public class CustomerController {
 
-//    private final CreateCustomerUseCase createCustomerUseCase;
+//    private final CreateCustomerIn createCustomerUseCase;
     private final RetryableTransactionalCreateCustomerService retryableCreateCustomerService;
     private final CustomerRestMapper mapper;
 

@@ -31,9 +31,4 @@ public class CustomerOutboxAdapter implements CustomerOutboxOut {
             throw new RuntimeException("Failed to save outbox event", e);
         }
     }
-
-    public static void main(String[] args) throws IOException {
-        Customer customer = new Customer(1L,"Ridha","BAOUEB","");
-        System.err.println(SerializationUtils.toBytes(customer));
-    }
 }
