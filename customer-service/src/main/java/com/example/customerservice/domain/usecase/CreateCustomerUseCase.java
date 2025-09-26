@@ -6,7 +6,7 @@ import com.example.customerservice.application.port.out.CustomerRepositoryOut;
 import com.example.customerservice.domain.model.Customer;
 import com.example.customerservice.infrastructure.usecase.UseCase;
 
-@UseCase
+//@UseCase
 public record CreateCustomerUseCase(CustomerRepositoryOut customerRepositoryOut,
                                     CustomerEventPublisherOut customerEventPublisherOut) implements CreateCustomerIn {
 

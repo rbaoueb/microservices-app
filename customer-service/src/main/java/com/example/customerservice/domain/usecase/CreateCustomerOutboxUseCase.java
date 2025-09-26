@@ -13,7 +13,7 @@ public record CreateCustomerOutboxUseCase(CustomerRepositoryOut customerReposito
 
     @Override
     public Customer execute(Customer customer) {
-        customerRepositoryOut.findById(customer.getId()).ifPresent(c -> {
+        customerRepositoryOut.findByEmail(customer.getEmail()).ifPresent(c -> {
             throw new CustomerAlreadyExistException("Customer already exists");
         });
         var createdCustomer = customerRepositoryOut.save(customer);//ok

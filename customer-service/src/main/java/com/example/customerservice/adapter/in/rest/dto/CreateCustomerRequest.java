@@ -1,3 +1,5 @@
 package com.example.customerservice.adapter.in.rest.dto;
 
-public record CreateCustomerRequest(String firstName, String lastName, String email) {}
+import jakarta.validation.constraints.NotNull;
+
+public record CreateCustomerRequest(@NotNull String firstName, String lastName, String email) {}

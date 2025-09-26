@@ -15,7 +15,6 @@ public class TransactionalCreateCustomerService {
     @Transactional
     public Customer create(Customer customer) {
         // Appel du Use Case pur à l’intérieur d’une transaction
-//        return null;
         return createCustomerUseCase.execute(customer);
     }
 }

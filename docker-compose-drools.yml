@@ -1,34 +1,54 @@
-version: '3.7'
+version: "3.8"
 
 services:
-  business-central:
-    image: quay.io/kiegroup/business-central-workbench:7.73.0.Final
-    container_name: business-central
+  postgres-drools:
+    image: postgres:14
+    restart: always
+    container_name: drools-db
+    environment:
+      POSTGRES_DB: drools
+      POSTGRES_USER: drools
+      POSTGRES_PASSWORD: droolspw
     ports:
-      - "3366:8080"
+      - "5438:5432"
     volumes:
-      - ./users.properties:/opt/jboss/wildfly/standalone/configuration/application-users.properties
-      - ./roles.properties:/opt/jboss/wildfly/standalone/configuration/application-roles.properties
+      - pgdata:/var/lib/postgresql/data
     networks:
       - drools-net
 
-  kieserver:
-    image: quay.io/kiegroup/kie-server:7.73.0.Final
-    container_name: kieserver
+  drools-workbench:
+    image: jboss/drools-workbench-showcase:latest
+    container_name: drools-workbench
     ports:
-      - "3367:8080"
+      - "3366:8080"       # accéder à Business Central via http://localhost:3366/business-central
     environment:
-      - KIE_SERVER_CONTROLLER=http://business-central:8080/business-central/rest/controller
-      - KIE_SERVER_CONTROLLER_USER=admin
-      - KIE_SERVER_CONTROLLER_PWD=admin123
-      - KIE_MAVEN_REPO=http://business-central:8080/business-central/maven2
-    volumes:
-      - ./users.properties:/opt/jboss/wildfly/standalone/configuration/application-users.properties
-      - ./roles.properties:/opt/jboss/wildfly/standalone/configuration/application-roles.properties
+      - DB_HOST=drools-db
+      - DB_PORT=5432
+      - DB_SCHEMA=drools
+      - DB_USER=drools
+      - DB_PWD=droolspw
+      - KIE_SERVER_CONTROLLER=http://drools-workbench:8080/kie-wb/rest/controller
     depends_on:
-      - business-central
+      - postgres-drools
     networks:
       - drools-net
+
+  kie-server:
+    image: jboss/kie-server-showcase:latest
+    container_name: kie-server
+    ports:
+      - "3367:8080"       # accès au KIE Server REST sur http://localhost:3367
+    environment:
+      - KIE_SERVER_CONTROLLER=http://drools-workbench:8080/kie-wb/rest/controller
+      - KIE_SERVER_USER=kieuser
+      - KIE_SERVER_PWD=kiepwd
+    depends_on:
+      - drools-workbench
+    networks:
+      - drools-net
+
+volumes:
+  pgdata:
 
 networks:
   drools-net:
