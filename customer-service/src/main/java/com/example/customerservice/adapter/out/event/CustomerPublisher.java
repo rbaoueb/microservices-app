@@ -27,4 +27,17 @@ public class CustomerPublisher implements CustomerEventPublisherOut {
                 .build();
         kafkaTemplate.send(topic, String.valueOf(customer.getId()), event);
     }
+
+    @Override
+    public void publishUpdateEmailCustomer(Customer customer) {
+        CustomerEvent customerEvent = CustomerEvent.newBuilder()
+                .setFirstName(customer.getFirstName())
+                .setLastName(customer.getLastName())
+                .setEmail(customer.getEmail())
+                .setEventType("UPDATE EMAIL")
+                .build();
+        kafkaTemplate.send(topic, String.valueOf(customer.getId()), customerEvent);
+    }
+
+
 }

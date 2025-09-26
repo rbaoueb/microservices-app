@@ -2,7 +2,9 @@ package com.example.customerservice.adapter.in.rest;
 
 import com.example.customerservice.adapter.in.mapper.CustomerRestMapper;
 import com.example.customerservice.adapter.in.rest.dto.CreateCustomerRequest;
+import com.example.customerservice.adapter.in.rest.dto.UpdateEmailCustomerRequest;
 import com.example.customerservice.adapter.in.transaction.RetryableTransactionalCreateCustomerService;
+import com.example.customerservice.adapter.in.transaction.RetryableTransactionalUpdateEmailCustomerService;
 import com.example.customerservice.application.port.in.CreateCustomerIn;
 import com.example.customerservice.domain.usecase.CreateCustomerUseCase;
 import com.example.customerservice.domain.model.Customer;
@@ -25,6 +27,7 @@ public class CustomerController {
 //    private final CreateCustomerIn createCustomerUseCase;
     private final RetryableTransactionalCreateCustomerService retryableCreateCustomerService;
     private final CustomerRestMapper mapper;
+    private final RetryableTransactionalUpdateEmailCustomerService retryableTransactionalUpdateEmailCustomerService;
 
 //    @GetMapping
 //    public ResponseEntity<List<CustomerDTO>> getAll() {
@@ -62,5 +65,20 @@ public class CustomerController {
                 .buildAndExpand(created.getId())
                 .toUri();
         return ResponseEntity.created(location).body(created);
+    }
+
+    @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Customer> updateEmailCustomer(@RequestBody @Valid UpdateEmailCustomerRequest updateEmailCustomerRequest) {
+        log.debug("Request received: update email customer");
+
+        Customer updated = retryableTransactionalUpdateEmailCustomerService
+                .updateEmailCustomer(updateEmailCustomerRequest);
+//        URI location = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(updated.getId())
+//                .toUri();
+        return ResponseEntity.ok(updated);
+
     }
 }

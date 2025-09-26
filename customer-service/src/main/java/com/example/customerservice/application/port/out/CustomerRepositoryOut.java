@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface CustomerRepositoryOut {
     Customer save(Customer customer);
     Optional<Customer> findById(Long id);
+
+    Boolean existingCustomerWithEmail(String email);
 }

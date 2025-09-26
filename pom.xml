@@ -55,6 +55,13 @@
                 <version>5.0.0</version> <!-- correspond à Servlet 5.0 -->
                 <scope>provided</scope>
             </dependency>
+
+            <dependency>
+                <groupId>io.confluent</groupId>
+                <artifactId>kafka-avro-serializer</artifactId>
+                <version>7.5.0</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
