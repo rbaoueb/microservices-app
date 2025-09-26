@@ -10,6 +10,6 @@ public class CustomerRestMapper {
 
     public Customer toDomain(CreateCustomerRequest request) {
         // L'ID sera généré par le UseCase
-        return new Customer(null, request.firstName(), request.lastName(), request.email());
+        return new Customer(null, request.firstName(), request.lastName(), request.email(), request.status(), null);
     }
 }

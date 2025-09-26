@@ -9,5 +9,6 @@ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
     <include file="./1.0.0/add-uk-address.sql" relativeToChangelogFile="true"/>
     <include file="./1.0.0/inject-data.sql" relativeToChangelogFile="true"/>
     <include file="./1.0.0/customer-outbox.sql" relativeToChangelogFile="true"/>
+    <include file="./1.0.0/customer-extra-fields.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

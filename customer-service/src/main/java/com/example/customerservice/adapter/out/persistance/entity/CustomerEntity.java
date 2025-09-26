@@ -26,6 +26,13 @@ public class CustomerEntity {
 
     @Column(unique = true)
     private String email;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "discount")
+    private Double discount;
+
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AdresseEntity> adresses = new ArrayList<>();
 }

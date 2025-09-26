@@ -15,4 +15,6 @@ public class Customer implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
+    private String status;
+    private Double discount;
 }

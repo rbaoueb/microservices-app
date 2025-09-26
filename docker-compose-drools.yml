@@ -14,10 +14,10 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
-      - drools-net
+      - spring-net
 
   drools-workbench:
-    image: jboss/drools-workbench-showcase:latest
+    image: jboss/business-central-workbench-showcase:7.61.0.Final
     container_name: drools-workbench
     ports:
       - "3366:8080"       # accéder à Business Central via http://localhost:3366/business-central
@@ -31,10 +31,10 @@ services:
     depends_on:
       - postgres-drools
     networks:
-      - drools-net
+      - spring-net
 
   kie-server:
-    image: jboss/kie-server-showcase:latest
+    image: jboss/kie-server-showcase:7.61.0.Final
     container_name: kie-server
     ports:
       - "3367:8080"       # accès au KIE Server REST sur http://localhost:3367
@@ -45,11 +45,11 @@ services:
     depends_on:
       - drools-workbench
     networks:
-      - drools-net
+      - spring-net
 
 volumes:
   pgdata:
 
 networks:
-  drools-net:
+  spring-net:
     driver: bridge
