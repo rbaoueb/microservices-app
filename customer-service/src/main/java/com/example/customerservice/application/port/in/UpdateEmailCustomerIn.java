@@ -6,5 +6,5 @@ import com.example.customerservice.domain.model.Customer;
 @FunctionalInterface
 public interface UpdateEmailCustomerIn {
 
-    Customer execute(UpdateEmailCustomerRequest updateEmailCustomerRequest);
+    Customer execute(Long id, String email);
 }

@@ -15,23 +15,23 @@ import java.util.Optional;
 public record UpdateEmailCustomerUseCase(CustomerRepositoryOut customerRepositoryOut,
                                          CustomerEventPublisherOut customerEventPublisherOut) implements UpdateEmailCustomerIn {
     @Override
-    public Customer execute(UpdateEmailCustomerRequest updateEmailCustomerRequest) throws CustomerAlreadyExistException{
-        Boolean existingWithEmail = customerRepositoryOut.existingCustomerWithEmail(updateEmailCustomerRequest.email());
+    public Customer execute(Long id, String email) throws CustomerAlreadyExistException{
+        Boolean existingWithEmail = customerRepositoryOut
+                .existingCustomerWithEmail(email);
         if (existingWithEmail) {
-            throw new CustomerAlreadyExistException("Email " + updateEmailCustomerRequest.email() + " is already in use by another customer");
+            throw new CustomerAlreadyExistException("Email " + email + " is already in use by another customer");
         }
 
-        var updateEmailCustomer = customerRepositoryOut.findById(updateEmailCustomerRequest.id()
-        );
+        var updateEmailCustomer = customerRepositoryOut.findById(id);
 
         if (updateEmailCustomer.isPresent()){
             Customer customer = updateEmailCustomer.get();
-            customer.setEmail(updateEmailCustomerRequest.email());
+            customer.setEmail(email);
             Customer updated = customerRepositoryOut.save(customer);
             customerEventPublisherOut.publishUpdateEmailCustomer(updated);
             return updated;
         }else {
-            throw new ResourceNotFoundException("Customer with id " + updateEmailCustomerRequest.id() + " not found");
+            throw new ResourceNotFoundException("Customer with id " + id + " not found");
         }
     }
 }

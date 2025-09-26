@@ -21,7 +21,7 @@ public class RetryableTransactionalUpdateEmailCustomerService {
             maxAttempts = 5,
             backoff = @Backoff(delay = 2000, multiplier = 2)
     )
-    public Customer updateEmailCustomer(UpdateEmailCustomerRequest updateEmailCustomerRequest) {
-        return transactionalUpdateEmailCustomerService.updateEmailCustomer(updateEmailCustomerRequest);
+    public Customer updateEmailCustomer(Long id, String email) {
+        return transactionalUpdateEmailCustomerService.updateEmailCustomer(id, email);
     }
 }

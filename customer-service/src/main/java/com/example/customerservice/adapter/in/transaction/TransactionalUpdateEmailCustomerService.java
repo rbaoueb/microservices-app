@@ -14,7 +14,7 @@ public class TransactionalUpdateEmailCustomerService {
     private final UpdateEmailCustomerUseCase updateEmailCustomerUseCase;
 
     @Transactional
-    public Customer updateEmailCustomer(UpdateEmailCustomerRequest updateEmailCustomerRequest) {
-        return updateEmailCustomerUseCase.execute(updateEmailCustomerRequest);
+    public Customer updateEmailCustomer(Long id, String email) {
+        return updateEmailCustomerUseCase.execute(id, email);
     }
 }
