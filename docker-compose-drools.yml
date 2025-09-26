@@ -39,9 +39,12 @@ services:
     ports:
       - "3367:8080"       # accès au KIE Server REST sur http://localhost:3367
     environment:
-      - KIE_SERVER_CONTROLLER=http://drools-workbench:8080/kie-wb/rest/controller
-      - KIE_SERVER_USER=kieuser
-      - KIE_SERVER_PWD=kiepwd
+      - KIE_SERVER_CONTROLLER=http://drools-workbench:8080/business-central/rest/controller
+      - KIE_SERVER_CONTROLLER_USER=admin
+      - KIE_SERVER_CONTROLLER_PWD=admin
+      - KIE_MAVEN_REPO=http://drools-workbench:8080/business-central/maven2
+      - KIE_SERVER_ID=kie-server
+      - KIE_SERVER_LOCATION=http://localhost:3367/kie-server
     depends_on:
       - drools-workbench
     networks:
