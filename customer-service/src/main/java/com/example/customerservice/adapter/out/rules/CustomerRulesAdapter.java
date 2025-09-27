@@ -42,7 +42,9 @@ public class CustomerRulesAdapter implements CustomerRulesOut {
         log.error("response.getType()  : {}",response.getType() );
         log.error("response.getResult().getValue(customer.getEmail())  : {}",response.getResult().getValue(customer.getEmail()));
         if (response.getType() == ServiceResponse.ResponseType.SUCCESS) {
-            return (Customer) response.getResult().getValue(customer.getEmail());
+            var droolsCustomer = (Customer) response.getResult().getValue(customer.getEmail());
+            customer.setDiscount(droolsCustomer.getDiscount());
+            return customer;
         } else {
             throw new RuntimeException("Erreur KIE Server : " + response.getMsg());
         }
