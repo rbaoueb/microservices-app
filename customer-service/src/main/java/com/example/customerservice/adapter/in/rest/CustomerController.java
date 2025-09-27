@@ -63,4 +63,16 @@ public class CustomerController {
                 .toUri();
         return ResponseEntity.created(location).body(created);
     }
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Customer> updateRetryable(@RequestBody @Valid CreateCustomerRequest request) {
+        log.debug("Request received: update @email customer");
+        Customer customerDomain = mapper.toDomain(request);
+        Customer created = retryableCreateCustomerService.create(customerDomain);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(created.getId())
+                .toUri();
+        return ResponseEntity.ok(created);
+    }
 }

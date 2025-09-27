@@ -37,4 +37,21 @@ public class OutboxPublisher {
         }
     }
 
+    @Scheduled(fixedDelay = 5000)
+    @Transactional
+    public void publishUpdateOutboxEvents() {
+        var events = customerOutboxRepository.findBySentFalse();
+        for (var event : events) {
+            try {
+                log.info("Publishing event " + event.getCustomer());
+                customerEventPublisherOut.publishCustomerUpdated(event.getCustomer());
+                event.setSent(true);
+                customerOutboxRepository.save(event);
+            } catch (Exception e) {
+                log.warn("Kafka publish failed for event " + event.getId(),e);
+                // retry next scheduled run
+            }
+        }
+    }
+
 }
